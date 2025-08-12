@@ -19,7 +19,7 @@ body {
     flex-direction: column;
 }
 
-.equal {
+#equal {
     flex: 1;
 }
 
@@ -41,9 +41,16 @@ body {
 
 .display {
     height: 50px;
+    max-width: 100%;
     background-color: lightblue;
-    /* margin: 5px; */
     border-radius: 5px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: large;
+    text-overflow: clip;
+    overflow: auto;
+    white-space: nowrap;
 }
 
 .calculator {
@@ -54,4 +61,5 @@ body {
     display: flex;
     gap: 10px;
     flex-direction: column;
+    max-width: 500px;
 }
