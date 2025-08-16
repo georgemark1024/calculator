@@ -1,41 +1,17 @@
-function add(...args) {
-    let sum = 0;
-
-    args.forEach(num => {
-        sum+= num;
-    });
-
-    return sum;
+function add(a, b) {
+    return a + b;
 }
 
-function subtract(...args) {
-    let diff = args[0];
-
-    args.forEach(num => {
-        diff-= num;
-    });
-
-    return diff;
+function subtract(a, b) {
+    return a - b;
 }
 
-function multiply(...args) {
-    let res = 1;
-
-    args.forEach(num => {
-        res*= num;
-    });
-
-    return res;
+function multiply(a, b) {
+    return a * b;
 }
 
-function divide(...args) {
-    let res = args[0];
-
-    args.forEach(num => {
-        res/= num;
-    });
-
-    return res;
+function divide(a, b) {
+    return a / b;
 }
 
 function operate(num1, operator, num2) {
@@ -72,19 +48,92 @@ for (let i = 0; i < btns.length; i++) {
 }
 
 function evaluate(expr) {
-    let operators = ["*", "/", "+", "-"];
+    let operators = ["/", "*", "+", "-"];
 
-    let i = 0;
-    while (expr.length != 1) {
-        if (operators.includes(expr[i])) {
-            let num1 = Number(expr[i - 1]);
-            let operator = expr[i];
-            let num2 = Number(expr[i + 1]);
-            let res = operate(num1, operator, num2);
-            expr.splice(i - 1, 3, res);
-            i = 0;
+    let operatorsObj = expr.reduce((obj, item, index) => {
+        if (operators.includes(item)) {
+            if (item in obj)
+                obj[item].push(index);
+            else
+                obj[item] = [index];
         }
-        i++;
+        return obj;
+    }, {});
+
+
+    while (Object.keys(operatorsObj).length != 0) {
+        const [mul, div, addSign, sub] = ["*", "/", "+", "-"];
+
+        if (div in operatorsObj) {
+            locations = operatorsObj[div];
+
+            let i = 0;
+            while (locations.length) {
+                opLocation = locations[i];
+                indexNum1 = opLocation - 1;
+                indexNum2 = opLocation + 1;
+                res = operate(Number(expr[indexNum1]), div, Number(expr[indexNum2]));
+                expr.splice(indexNum1, 3, res);
+                locations.splice(i, 1);
+
+            }
+
+            if (locations.length == 0)
+                delete operatorsObj[div];
+
+        } else if (mul in operatorsObj) {
+            locations = operatorsObj[mul];
+
+            let i = 0;
+            while (locations.length) {
+                opLocation = locations[i];
+                indexNum1 = opLocation - 1;
+                indexNum2 = opLocation + 1;
+                res = operate(Number(expr[indexNum1]), mul, Number(expr[indexNum2]));
+                expr.splice(indexNum1, 3, res);
+                locations.splice(i, 1);
+            }
+            
+            if (locations.length == 0)
+                delete operatorsObj[mul];
+
+
+        } else if (addSign in operatorsObj) {
+            locations = operatorsObj[addSign];
+
+            let i = 0;
+            while (locations.length) {
+                opLocation = locations[i];
+                indexNum1 = opLocation - 1;
+                indexNum2 = opLocation + 1;
+                res = operate(Number(expr[indexNum1]), addSign, Number(expr[indexNum2]));
+                expr.splice(indexNum1, 3, res);
+                locations.splice(i, 1);
+
+            }
+            
+            if (locations.length == 0)
+                delete operatorsObj[addSign];
+
+
+        } else if (sub in operatorsObj) {
+            locations = operatorsObj[sub];
+
+            let i = 0;
+            while (locations.length) {
+                opLocation = locations[i];
+                indexNum1 = opLocation - 1;
+                indexNum2 = opLocation + 1;
+                res = operate(Number(expr[indexNum1]), sub, Number(expr[indexNum2]));
+                expr.splice(indexNum1, 3, res);
+                locations.splice(i, 1);
+
+            }
+            
+            if (locations.length == 0)
+                delete operatorsObj[sub];
+
+        }
     }
 
     return expr[0];
