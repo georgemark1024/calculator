@@ -24,6 +24,16 @@ body {
     flex: 1;
 }
 
+#decimal {
+    flex: 1;
+}
+
+.calc-row {
+    display: flex;
+    flex: 1;
+    gap: 4px;
+}
+
 .rows {
     display: flex;
     flex-direction: column;

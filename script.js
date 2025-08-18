@@ -176,5 +176,6 @@ equal.addEventListener("click", () => {
 
     display.textContent = res;
     RESULTISSET = 1;
+    DECIMALISSET = 0;
 });
 
