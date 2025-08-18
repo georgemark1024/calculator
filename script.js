@@ -11,6 +11,9 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    if (b == 0)
+        return "Math Error";
+
     return a / b;
 }
 
@@ -37,13 +40,19 @@ btns = document.querySelectorAll(".calc-button");
 clear.addEventListener("click", () => {
     display.textContent = "";
 });
+let RESULTISSET = 0;
 
 for (let i = 0; i < btns.length; i++) {
     if (btns[i].id == "clear" || btns[i].id == "equal") {
         continue;
     }
     btns[i].addEventListener("click", () => {
-        display.textContent += btns[i].textContent;
+        if (RESULTISSET) {
+            display.textContent = btns[i].textContent;
+            RESULTISSET = 0;
+        } else {
+            display.textContent += btns[i].textContent;
+        }
     })
 }
 
@@ -147,5 +156,6 @@ equal.addEventListener("click", () => {
     res = evaluate(expr);
 
     display.textContent = res;
+    RESULTISSET = 1;
 });
 
