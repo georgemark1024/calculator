@@ -33,17 +33,36 @@ function operate(num1, operator, num2) {
 }
 
 clear = document.querySelector("#clear");
+del = document.querySelector("#del");
 equal = document.querySelector("#equal");
+decimal = document.querySelector("#decimal");
 display = document.querySelector(".display");
 btns = document.querySelectorAll(".calc-button");
 
 clear.addEventListener("click", () => {
     display.textContent = "";
 });
+
+del.addEventListener("click", () => {
+    display.textContent = display.textContent.slice(0, -1);
+})
+
+decimal.addEventListener("click", () => {
+    if (DECIMALISSET) {
+        return;
+    } else {
+        display.textContent += ".";
+        DECIMALISSET = 1;
+    }
+})
+
 let RESULTISSET = 0;
+let DECIMALISSET = 0;
 
 for (let i = 0; i < btns.length; i++) {
-    if (btns[i].id == "clear" || btns[i].id == "equal") {
+    avoid = ["clear", "equal", "del", "decimal"];
+
+    if (avoid.includes(btns[i].id)) {
         continue;
     }
     btns[i].addEventListener("click", () => {
